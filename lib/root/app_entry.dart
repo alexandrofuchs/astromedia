@@ -7,10 +7,14 @@ class AppEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    Modular.setInitialRoute('/home/');
+
     return MaterialApp.router(
       title: 'Astromidia',
       theme: AppTheme.theme(isDarkMode: true),
       routerConfig: Modular.routerConfig,
+
     );
   }
 }

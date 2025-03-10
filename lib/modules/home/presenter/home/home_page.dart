@@ -1,3 +1,4 @@
+import 'package:astromedia/core/widgets/bottom_navigator/bottom_navigator_scaffold.dart';
 import 'package:astromedia/modules/home/domain/enums/media_type.dart';
 import 'package:astromedia/modules/home/domain/models/astronomical_media_model.dart';
 import 'package:astromedia/modules/home/presenter/home/bloc/astronomical_media_bloc.dart';
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BottomNavigatorScaffold(
       appBar: AppBar(title: Text('Wow!')),
       body: BlocBuilder<AstronomicalMediaBloc, AstronomicalMediaBlocState>(
         bloc: bloc,
