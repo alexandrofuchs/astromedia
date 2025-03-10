@@ -1,4 +1,4 @@
-# astroimg
+# astromedia
 
 A new Flutter project.
 

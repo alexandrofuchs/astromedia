@@ -1,5 +1,5 @@
-import 'package:astroimg/core/external/api/domain/i_interceptor/i_request_interceptor.dart';
-import 'package:astroimg/core/logs/api_logger.dart';
+import 'package:astromedia/core/external/api/domain/i_interceptor/i_request_interceptor.dart';
+import 'package:astromedia/core/logs/api_logger.dart';
 import 'package:dio/dio.dart';
 
 part 'interceptors_part.dart';

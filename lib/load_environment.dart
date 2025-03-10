@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:astroimg/core/external/api/api_request_interceptor.dart';
+import 'package:astromedia/core/external/api/api_request_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

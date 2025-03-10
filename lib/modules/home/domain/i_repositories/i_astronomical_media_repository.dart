@@ -1,3 +1,5 @@
+import 'package:astromedia/modules/home/domain/models/astronomical_media_model.dart';
+
 abstract interface class IAstronomicalMediaRepository {
-  Future<Object?> getMedia(dynamic day);
+  Future<AstronomicalMediaModel> getMedia(dynamic day);
 }

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "astroimg" "\0"
+            VALUE "FileDescription", "astromedia" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "astroimg" "\0"
+            VALUE "InternalName", "astromedia" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "astroimg.exe" "\0"
-            VALUE "ProductName", "astroimg" "\0"
+            VALUE "OriginalFilename", "astromedia.exe" "\0"
+            VALUE "ProductName", "astromedia" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

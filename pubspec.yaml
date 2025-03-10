@@ -1,4 +1,4 @@
-name: astroimg
+name: astromedia
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -17,6 +17,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   equatable: ^2.0.7
   dio: ^5.8.0+1
+  bloc: ^9.0.0
 
 dev_dependencies:
   flutter_test:

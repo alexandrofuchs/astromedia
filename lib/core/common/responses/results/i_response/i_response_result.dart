@@ -1,6 +1,6 @@
 
-import 'package:astroimg/core/common/exceptions/app_exception.dart';
-import 'package:astroimg/core/logs/app_logger.dart';
+import 'package:astromedia/core/common/exceptions/app_exception.dart';
+import 'package:astromedia/core/logs/app_logger.dart';
 import 'package:equatable/equatable.dart';
 
 part '../success_result.dart';

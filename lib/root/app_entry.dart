@@ -1,4 +1,4 @@
-import 'package:astroimg/core/themes/app_theme.dart';
+import 'package:astromedia/core/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

@@ -1,4 +1,4 @@
-import 'package:astroimg/core/logs/app_logger.dart';
+import 'package:astromedia/core/logs/app_logger.dart';
 
 abstract class ApiLogger {
   static void onRequest(String method, String path, {dynamic body}) {

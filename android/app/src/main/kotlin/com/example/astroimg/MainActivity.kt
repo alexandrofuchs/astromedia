@@ -1,4 +1,4 @@
-package com.example.astroimg
+package com.example.astromedia
 
 import io.flutter.embedding.android.FlutterActivity
 
