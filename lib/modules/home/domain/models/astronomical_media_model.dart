@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 
 class AstronomicalMediaModel extends Equatable {
   final String? copyright;
-  final String date;
+  final DateTime date;
   final String explanation;
-  final String hdUrl;
+  final String? hdUrl;
   final MediaType mediaType;
   final String title;
   final String url;
@@ -21,5 +21,5 @@ class AstronomicalMediaModel extends Equatable {
   });
   
   @override
-  List<Object?> get props => [title, copyright];
+  List<Object?> get props => [title, copyright, mediaType.value];
 }

@@ -2,7 +2,7 @@ import 'package:astromedia/core/common/exceptions/app_exception.dart';
 import 'package:astromedia/core/common/responses/results/i_response/i_response_result.dart';
 import 'package:astromedia/modules/home/domain/i_usecases/i_astronomical_media_usecase.dart';
 import 'package:astromedia/modules/home/domain/models/astronomical_media_model.dart';
-import 'package:astromedia/modules/home/presenter/home/bloc/astronomical_media_bloc.dart';
+import 'package:astromedia/modules/home/presenter/bloc/astronomical_media_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

@@ -21,6 +21,8 @@ dependencies:
   video_player: ^2.9.3
   mockito: ^5.4.5
   build_runner: ^2.4.15
+  shared_preferences: ^2.5.2
+  youtube_player_flutter: ^9.1.1
 
 dev_dependencies:
   flutter_test:
