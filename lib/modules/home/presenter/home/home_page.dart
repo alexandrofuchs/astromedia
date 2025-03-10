@@ -38,10 +38,12 @@ class _HomePageState extends State<HomePage> {
     };
 
   Widget loaded(AstronomicalMediaModel model) =>
-    Column(children: [
+    ListView(children: [
       mediaWidget(model.mediaType, model.url),
       Text(model.title),
-      Text(model.date)
+      Text(model.date),
+      SizedBox(height: 15,),  
+      Text(model.explanation),
     ],);
 
   Widget failed() => Center(child: Text('failed'));

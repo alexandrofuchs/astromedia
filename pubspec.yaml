@@ -19,6 +19,8 @@ dependencies:
   dio: ^5.8.0+1
   bloc: ^9.0.0
   video_player: ^2.9.3
+  mockito: ^5.4.5
+  build_runner: ^2.4.15
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +33,7 @@ flutter:
 
   assets:
     - .env/
+    - mocks/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
