@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
 abstract class AppTheme {
-  static ThemeData theme([bool isDark = false]) =>
-      isDark ? ThemeData.light().copyWith() : ThemeData.dark().copyWith();
+  static ThemeData theme({bool isDarkMode = false}) =>
+      isDarkMode ? ThemeData.dark().copyWith() : ThemeData.light().copyWith() ;
 }

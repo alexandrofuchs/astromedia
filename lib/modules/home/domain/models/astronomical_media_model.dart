@@ -1,6 +1,7 @@
 import 'package:astromedia/modules/home/domain/enums/media_type.dart';
+import 'package:equatable/equatable.dart';
 
-class AstronomicalMediaModel {
+class AstronomicalMediaModel extends Equatable {
   final String copyright;
   final String date;
   final String explanation;
@@ -9,7 +10,7 @@ class AstronomicalMediaModel {
   final String title;
   final String url;
 
-  AstronomicalMediaModel({
+  const AstronomicalMediaModel({
     required this.copyright,
     required this.date,
     required this.explanation,
@@ -18,4 +19,7 @@ class AstronomicalMediaModel {
     required this.title,
     required this.url,
   });
+  
+  @override
+  List<Object?> get props => [title, copyright];
 }

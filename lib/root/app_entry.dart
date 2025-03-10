@@ -8,8 +8,8 @@ class AppEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Astronomical',
-      theme: AppTheme.theme(),
+      title: 'Astromidia',
+      theme: AppTheme.theme(isDarkMode: true),
       routerConfig: Modular.routerConfig,
     );
   }

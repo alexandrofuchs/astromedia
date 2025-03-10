@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 enum AppEnvironment { dev, hml, prod }
 
-Future<void> loadEnvironmentApi(AppEnvironment env) async => switch (env) {
+Future<void> loadAppEnvironment(AppEnvironment env) async => switch (env) {
   AppEnvironment.dev => await _loadInDev(),
   AppEnvironment.hml => () {},
   AppEnvironment.prod => () {},

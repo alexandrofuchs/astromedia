@@ -4,19 +4,19 @@ import 'package:astromedia/modules/home/domain/models/astronomical_media_model.d
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'home_bloc_part.dart';
+part 'astronomical_media_bloc_part.dart';
 
-class HomeBloc extends Bloc<HomeBlocEvent, HomeBlocState> {
+class AstronomicalMediaBloc extends Bloc<AstronomicalMediaBlocEvent, AstronomicalMediaBlocState> {
   final IAstronomicalMediaUsecase _usecase;
 
-  HomeBloc(this._usecase) : super(const HomeBlocState(HomeBlocStatus.initial)) {
+  AstronomicalMediaBloc(this._usecase) : super(const AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.initial)) {
     on<GetMedia>((event, emit) async {
       final res = await _usecase.getMedia('a');
 
       res.resolve(
-        onFail: (err) => emit(HomeBlocState(HomeBlocStatus.failed, error: err)),
+        onFail: (err) => emit(AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.failed, error: err)),
         onSuccess:
-            (data) => emit(HomeBlocState(HomeBlocStatus.loaded, data: data)),
+            (data) => emit(AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.loaded, data: data)),
       );
     });
   }

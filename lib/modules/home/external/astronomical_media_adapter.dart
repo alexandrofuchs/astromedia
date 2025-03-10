@@ -6,8 +6,8 @@ extension AstronomicalMediaAdapter on AstronomicalMediaModel {
         copyright: map['copyright'],
         date: map['date'],
         explanation: map['explanation'],
-        hdUrl: map['hdUrl'],
-        mediaType: map['mediaType'],
+        hdUrl: map['hdurl'],
+        mediaType: MediaType.fromValue(map['media_type']),
         title: map['title'],
         url: map['url'],
       );
