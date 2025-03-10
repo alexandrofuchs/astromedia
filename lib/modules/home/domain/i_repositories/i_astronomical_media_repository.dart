@@ -1,3 +1,3 @@
 abstract interface class IAstronomicalMediaRepository {
-  Future<void> getMedia(dynamic day);
+  Future<Object?> getMedia(dynamic day);
 }
