@@ -15,14 +15,17 @@ void main() {
   IAstronomicalMediaUsecase usecase = AstronomicalMediaUsecase(repository);
 
   test('motels usecase succeed', () async {
-    when(repository.getMedia('a')).thenAnswer((_) async => MockAstronomicalMediaModel());
-    final response = await usecase.getMedia('a');
+    final now = DateTime.now();
+
+    when(repository.getMedia(now)).thenAnswer((_) async => MockAstronomicalMediaModel());
+    final response = await usecase.getMedia(now);
     expect(response, isA<Success<AstronomicalMediaModel>>());
   });
 
   test('motels usecase failed', () async {
-    when(repository.getMedia('a')).thenThrow('cannot load the media');
-    final response = await usecase.getMedia('a');
+    final now = DateTime.now().add(Duration(days: 1));
+    when(repository.getMedia(now)).thenThrow('cannot load the media');
+    final response = await usecase.getMedia(now);
     expect(response, isA<Fail>());
   });
 }

@@ -2,7 +2,7 @@ import 'package:astromedia/modules/home/domain/enums/media_type.dart';
 import 'package:equatable/equatable.dart';
 
 class AstronomicalMediaModel extends Equatable {
-  final String copyright;
+  final String? copyright;
   final String date;
   final String explanation;
   final String hdUrl;

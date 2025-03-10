@@ -39,20 +39,20 @@ class _FakeAstronomicalMediaModel_0 extends _i1.SmartFake
 class MockIAstronomicalMediaRepository extends _i1.Mock
     implements _i3.IAstronomicalMediaRepository {
   @override
-  _i4.Future<_i2.AstronomicalMediaModel> getMedia(dynamic day) =>
+  _i4.Future<_i2.AstronomicalMediaModel> getMedia(DateTime? date) =>
       (super.noSuchMethod(
-            Invocation.method(#getMedia, [day]),
+            Invocation.method(#getMedia, [date]),
             returnValue: _i4.Future<_i2.AstronomicalMediaModel>.value(
               _FakeAstronomicalMediaModel_0(
                 this,
-                Invocation.method(#getMedia, [day]),
+                Invocation.method(#getMedia, [date]),
               ),
             ),
             returnValueForMissingStub:
                 _i4.Future<_i2.AstronomicalMediaModel>.value(
                   _FakeAstronomicalMediaModel_0(
                     this,
-                    Invocation.method(#getMedia, [day]),
+                    Invocation.method(#getMedia, [date]),
                   ),
                 ),
           )
@@ -64,21 +64,6 @@ class MockIAstronomicalMediaRepository extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockAstronomicalMediaModel extends _i1.Mock
     implements _i2.AstronomicalMediaModel {
-  @override
-  String get copyright =>
-      (super.noSuchMethod(
-            Invocation.getter(#copyright),
-            returnValue: _i5.dummyValue<String>(
-              this,
-              Invocation.getter(#copyright),
-            ),
-            returnValueForMissingStub: _i5.dummyValue<String>(
-              this,
-              Invocation.getter(#copyright),
-            ),
-          )
-          as String);
-
   @override
   String get date =>
       (super.noSuchMethod(

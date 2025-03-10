@@ -9,9 +9,9 @@ class AstronomicalMediaUsecase implements IAstronomicalMediaUsecase {
 
   AstronomicalMediaUsecase(this._repository);
   @override
-  Future<IResponseResult<AstronomicalMediaModel>> getMedia(day) async {
+  Future<IResponseResult<AstronomicalMediaModel>> getMedia(DateTime date) async {
     try {
-      return Success(await _repository.getMedia(day));
+      return Success(await _repository.getMedia(date));
     } catch (e) {
       return Fail(AppException(id: e, method: getMedia, namespace: this));
     }

@@ -16,7 +16,11 @@ class AstronomicalMediaBlocState extends Equatable {
 
 abstract class AstronomicalMediaBlocEvent extends Equatable {}
 
-class GetMedia extends AstronomicalMediaBlocEvent {
+class GetMediaEvent extends AstronomicalMediaBlocEvent {
+  final DateTime date;
+
+  GetMediaEvent(this.date);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [date];
 }

@@ -28,11 +28,13 @@ void main() {
     test(
       'emits [AstronomicalMediaBlocState(loaded)] when GetMedia is added',
       () {
+        final now = DateTime.now();
+
         when(
-          usecase.getMedia('a'),
+          usecase.getMedia(now),
         ).thenAnswer((_) async => Success(MockAstronomicalMediaModel()));
         final bloc = AstronomicalMediaBloc(usecase);
-        bloc.add(GetMedia());
+        bloc.add(GetMediaEvent(now));
         expectLater(
           bloc.stream,
           emitsInOrder([
@@ -46,7 +48,10 @@ void main() {
     test(
       'emits [AstronomicalMediaBlocState(failed)] when GetMedia is added',
       () {
-        when(usecase.getMedia('a')).thenAnswer(
+
+        final now  = DateTime.now().add(Duration(days: 1));
+
+        when(usecase.getMedia(now)).thenAnswer(
           (_) async => Fail(
             AppException(
               id: 'error',
@@ -56,7 +61,7 @@ void main() {
           ),
         );
         final bloc = AstronomicalMediaBloc(usecase);
-        bloc.add(GetMedia());
+        bloc.add(GetMediaEvent(now));
         expectLater(
           bloc.stream,
           emitsInOrder([

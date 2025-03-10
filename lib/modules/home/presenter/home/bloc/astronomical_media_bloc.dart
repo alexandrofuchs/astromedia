@@ -10,10 +10,10 @@ class AstronomicalMediaBloc extends Bloc<AstronomicalMediaBlocEvent, Astronomica
   final IAstronomicalMediaUsecase _usecase;
 
   AstronomicalMediaBloc(this._usecase) : super(const AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.initial)) {
-    on<GetMedia>((event, emit) async {
+    on<GetMediaEvent>((event, emit) async {
       emit(AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.loading));
 
-      final res = await _usecase.getMedia('a');
+      final res = await _usecase.getMedia(event.date);
 
       res.resolve(
         onFail: (err) => emit(AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.failed, error: err)),
