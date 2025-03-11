@@ -1,7 +1,7 @@
 import 'package:astromedia/core/helpers/extensions/datetime_extension.dart';
-import 'package:astromedia/core/helpers/formatters/date_string_formatters.dart';
 import 'package:astromedia/core/themes/app_colors.dart';
 import 'package:astromedia/core/widgets/bottom_navigator/bottom_navigator_scaffold.dart';
+import 'package:astromedia/core/widgets/set_theme/set_theme_widget.dart';
 import 'package:astromedia/core/widgets/snackbars/app_snackbars.dart';
 import 'package:astromedia/modules/favorites/presenter/pages/favorites_mixin.dart';
 import 'package:astromedia/modules/home/domain/enums/media_type.dart';
@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with FavoritesMixin {
+class _HomePageState extends State<HomePage> with FavoritesMixin, SetThemeWidget {
   final bloc = AstronomicalMediaBloc(Modular.get());
 
   final selectedDate = ValueNotifier<DateTime?>(DateTime.now());
@@ -151,7 +151,13 @@ class _HomePageState extends State<HomePage> with FavoritesMixin {
   @override
   Widget build(BuildContext context) {
     return BottomNavigatorScaffold(
-      appBar: AppBar(title: Text('Wow!')),
+      appBar: AppBar(title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(''),
+          setThemeModeAction(),
+        ],
+      )),
       body: Column(
         children: [
           dateActions(),
