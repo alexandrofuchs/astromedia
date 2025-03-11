@@ -20,8 +20,6 @@ class _AppEntryState extends State<AppEntry> {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/home/');
-
     return  MaterialApp.router(
       title: 'Astromidia',
       theme: AppTheme.theme(),

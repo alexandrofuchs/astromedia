@@ -11,7 +11,7 @@ class BottomNavigatorScaffold extends StatefulWidget {
   final bool showMessagesMenu;
   final PreferredSizeWidget? appBarBottom;
   final String? routeName;
-  final bool drawerEnabled;
+  final bool fullscreenMode;
   final Widget body;
   final Color? backgroundColor;
   final Color navigationBarColor;
@@ -26,7 +26,7 @@ class BottomNavigatorScaffold extends StatefulWidget {
       this.appBarLeading,
       this.showMessagesMenu = false,
       this.routeName,
-      this.drawerEnabled = true,
+      this.fullscreenMode = false,
       required this.body,
       this.backgroundColor,
       this.canPop,
@@ -63,11 +63,12 @@ class BottomNavigatorScaffoldState extends State<BottomNavigatorScaffold>  {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: widget.canPop ?? !widget.drawerEnabled,
+      canPop: widget.canPop ?? false,
       onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: Scaffold(
+        
+        appBar: widget.fullscreenMode ? AppBar(toolbarHeight: 0) : widget.appBar,
         backgroundColor: widget.backgroundColor,
-        appBar: widget.appBar,
         body: widget.body,
         extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
         bottomNavigationBar: BlocBuilder<BottomNavigatorBloc, NavigationState>(
@@ -76,14 +77,16 @@ class BottomNavigatorScaffoldState extends State<BottomNavigatorScaffold>  {
                   Status.empty => Container(
                       color: AppColors.primaryColor,
                     ),
-                  Status.loaded => NavigationBar(
-                      overlayColor: const WidgetStatePropertyAll(AppColors.orangeColor),
+                  Status.loaded =>  
+                    widget.fullscreenMode ? SizedBox() :
+                    NavigationBar(
+                      overlayColor: const WidgetStatePropertyAll(AppColors.primaryColor),
                       onDestinationSelected: (int index) {
                         Modular.get<BottomNavigatorBloc>().navigateTo(List.of(state.navigations.values)[index]);
                       },
                       selectedIndex: List.of(state.navigations.values).indexOf(state.current!),
                       destinations: List.of(state.navigations.values),
-                    ),
+                    ) ,
                 }),
       ),
     );

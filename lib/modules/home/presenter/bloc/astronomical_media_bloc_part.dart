@@ -24,3 +24,12 @@ class GetMediaEvent extends AstronomicalMediaBlocEvent {
   @override
   List<Object?> get props => [date];
 }
+
+class ResetEvent extends AstronomicalMediaBlocEvent {
+  final DateTime date;
+
+  ResetEvent(this.date);
+
+  @override
+  List<Object?> get props => [date];
+}

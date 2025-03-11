@@ -1,4 +1,5 @@
 import 'package:astromedia/core/themes/app_colors.dart';
+import 'package:astromedia/core/themes/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 abstract class AppSnackbars {
@@ -7,7 +8,7 @@ abstract class AppSnackbars {
               {Duration duration = const Duration(seconds: 2)}) =>
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             margin: const EdgeInsets.only(left: 8, right: 8, bottom: 30),
-            backgroundColor: AppColors.orangeColor,
+            backgroundColor: AppColors.primaryColor,
             duration: duration,
             shape:
                 const BeveledRectangleBorder(borderRadius: BorderRadius.zero),
@@ -30,6 +31,7 @@ abstract class AppSnackbars {
                       child: Text(
                         message,
                         softWrap: true,
+                        style: AppTextStyles.titleMedium,
                       ),
                     ),
                   ),
@@ -45,9 +47,8 @@ abstract class AppSnackbars {
   ) =>
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             margin: const EdgeInsets.only(left: 8, right: 8, bottom: 30),
-            backgroundColor: AppColors.greenColor,
-            shape:
-                const BeveledRectangleBorder(borderRadius: BorderRadius.zero),
+            backgroundColor: AppColors.primaryColor,
+            shape: const BeveledRectangleBorder(borderRadius: BorderRadius.zero),
             behavior: SnackBarBehavior.floating,
             content: GestureDetector(
               behavior: HitTestBehavior.translucent,
@@ -68,6 +69,7 @@ abstract class AppSnackbars {
                         message,
                         softWrap: true,
                         maxLines: 3,
+                        style: AppTextStyles.titleMedium,
                       ),
                     ),
                   ),

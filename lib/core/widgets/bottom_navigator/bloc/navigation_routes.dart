@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 abstract class BottomNavigatorRoutes {
   static Map<String, NavigationRoute> getNavigationRoutes() => {
         'home': const NavigationRoute(
-          route: '/home/',
+          route: '/',
           label: 'Início',
           icon: Icon(
             Icons.home,
           ),
         ),
         'favorites': const NavigationRoute(
-          route: '/favorites/',
+          route: '/favorites',
           icon: Icon(
             Icons.favorite,
           ),

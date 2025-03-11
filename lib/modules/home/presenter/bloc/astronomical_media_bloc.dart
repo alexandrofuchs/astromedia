@@ -20,5 +20,9 @@ class AstronomicalMediaBloc extends Bloc<AstronomicalMediaBlocEvent, Astronomica
         onSuccess: (data) => emit(AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.loaded, data: data)),
       );
     });
+
+    on<ResetEvent>((event, emit) async {
+      emit(AstronomicalMediaBlocState(AstronomicalMediaBlocStatus.initial));
+    });
   }
 }

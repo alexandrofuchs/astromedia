@@ -18,7 +18,7 @@ extension DateStringFormatters on String {
 
   DateTime? fromDMYDateString([String separator = '/']) {
     try {
-      final parts = this.split(separator);
+      final parts = split(separator);
       if (parts.length != 3) throw '';
       return DateTime(
         int.parse(parts[2]),
