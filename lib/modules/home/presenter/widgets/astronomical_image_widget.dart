@@ -1,4 +1,3 @@
-import 'package:astromedia/core/themes/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +25,7 @@ class AstronomicalImageWidget extends StatelessWidget {
 
         return Container(
           decoration: BoxDecoration(
-            color: AppColors.primaryColor,
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(5),
           ),
           height: height,

@@ -5,7 +5,7 @@ mixin YoutubePlayerOverlays on YoutubePlayerBaseWidgets {
         color: Colors.black,
         child: const Center(
             child: CircularProgressIndicator(
-          color: Colors.white,
+          color: AppColors.primaryColor,
         )),
       );
 
@@ -22,7 +22,7 @@ mixin YoutubePlayerOverlays on YoutubePlayerBaseWidgets {
 
   Widget _visibleActionsOverlay(BuildContext context, Function setState) =>
       Container(
-        color: Colors.black,
+        color: Colors.black.withAlpha(100),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -139,7 +139,7 @@ mixin YoutubePlayerOverlays on YoutubePlayerBaseWidgets {
             icon: const Icon(
               Icons.refresh,
               size: 60,
-              color: Colors.white,
+              color: AppColors.primaryColor,
             )),
       );
 }

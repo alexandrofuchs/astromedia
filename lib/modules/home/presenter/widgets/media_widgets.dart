@@ -9,7 +9,7 @@ import 'package:astromedia/modules/home/presenter/widgets/screen_mode.dart';
 import 'package:flutter/material.dart';
 
 mixin MediaWidgets on FavoritesWidget, ScreenMode {
-  Widget mediaBuilder(MediaType media, String uri, bool fullscreen) =>
+  Widget mediaBuilder(MediaType media, String uri, bool fullscreen, Function onRestart) =>
       switch (media) {
         MediaType.image => AstronomicalImageWidget(uri: uri),
         MediaType.video => YoutubeMediaPlayerWidget(
@@ -17,6 +17,7 @@ mixin MediaWidgets on FavoritesWidget, ScreenMode {
           fullscreen: fullscreen,
           label: '',
           title: '',
+          onRestart: onRestart,
         ),
         MediaType.none => SizedBox(),
       };

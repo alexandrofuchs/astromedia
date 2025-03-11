@@ -57,7 +57,6 @@ class _HomePageState extends State<HomePage>
       initialDate: now,
       firstDate: DateTime(1995, 06, 16),
       lastDate: now,
-      
     );
     if (pickedDate == null) return;
     selectedDate.value = pickedDate;
@@ -104,7 +103,10 @@ class _HomePageState extends State<HomePage>
   Widget mediaWidget(AstronomicalMediaModel model) => Stack(
     alignment: Alignment.bottomCenter,
     children: [
-      mediaBuilder(model.mediaType, model.url, fullscreen),
+      mediaBuilder(model.mediaType, model.url, fullscreen, (){
+        if(selectedDate.value == null) return;
+        bloc.add(GetMediaEvent(selectedDate.value!));
+      }),
       Container(
         padding: EdgeInsets.all(15),
         alignment: Alignment.bottomRight,
@@ -118,7 +120,7 @@ class _HomePageState extends State<HomePage>
             alignment: Alignment.center,
             child: const Icon(
               Icons.fullscreen,
-              color: AppColors.secundaryColor,
+              color: AppColors.primaryColor,
               size: 24,
             ),
           ),
@@ -128,7 +130,7 @@ class _HomePageState extends State<HomePage>
   );
 
   Widget loaded(AstronomicalMediaModel model) =>
-      isLandscape(context) || fullscreen
+      fullscreen
           ? mediaWidget(model)
           : ListView(
             children: [mediaWidget(model), infosWidget(context, model)],
@@ -141,7 +143,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return BottomNavigatorScaffold(
-      fullscreenMode: isLandscape(context) || fullscreen,
+      fullscreenMode: fullscreen,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +152,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: Column(
         children: [
-          isLandscape(context) || fullscreen ?  SizedBox() : dateActions(),
+          fullscreen ?  SizedBox() : dateActions(),
           Expanded(
             child:
                 BlocBuilder<AstronomicalMediaBloc, AstronomicalMediaBlocState>(

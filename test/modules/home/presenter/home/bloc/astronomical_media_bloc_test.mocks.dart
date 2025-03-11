@@ -35,6 +35,11 @@ class _FakeIResponseResult_0<DataType extends Object> extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
+class _FakeDateTime_1 extends _i1.SmartFake implements DateTime {
+  _FakeDateTime_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [IAstronomicalMediaUsecase].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -72,16 +77,16 @@ class MockIAstronomicalMediaUsecase extends _i1.Mock
 class MockAstronomicalMediaModel extends _i1.Mock
     implements _i5.AstronomicalMediaModel {
   @override
-  String get date =>
+  DateTime get date =>
       (super.noSuchMethod(
             Invocation.getter(#date),
-            returnValue: _i6.dummyValue<String>(this, Invocation.getter(#date)),
-            returnValueForMissingStub: _i6.dummyValue<String>(
+            returnValue: _FakeDateTime_1(this, Invocation.getter(#date)),
+            returnValueForMissingStub: _FakeDateTime_1(
               this,
               Invocation.getter(#date),
             ),
           )
-          as String);
+          as DateTime);
 
   @override
   String get explanation =>
@@ -94,21 +99,6 @@ class MockAstronomicalMediaModel extends _i1.Mock
             returnValueForMissingStub: _i6.dummyValue<String>(
               this,
               Invocation.getter(#explanation),
-            ),
-          )
-          as String);
-
-  @override
-  String get hdUrl =>
-      (super.noSuchMethod(
-            Invocation.getter(#hdUrl),
-            returnValue: _i6.dummyValue<String>(
-              this,
-              Invocation.getter(#hdUrl),
-            ),
-            returnValueForMissingStub: _i6.dummyValue<String>(
-              this,
-              Invocation.getter(#hdUrl),
             ),
           )
           as String);

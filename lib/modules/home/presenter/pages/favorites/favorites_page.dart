@@ -26,6 +26,8 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   final ValueNotifier<int> selectedFavoriteIndex = ValueNotifier(0);
 
+  final scrollController = ScrollController();
+
   @override
   void initState() {
     selectedFavoriteIndex.addListener(onChangeIndex);
@@ -42,6 +44,7 @@ class _FavoritesPageState extends State<FavoritesPage>
     selectedFavoriteIndex.dispose();
     storedDates.removeListener(onLoadedFavorites);
     storedDates.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -60,7 +63,9 @@ class _FavoritesPageState extends State<FavoritesPage>
   Widget mediaWidget(AstronomicalMediaModel model) => Stack(
     alignment: Alignment.bottomCenter,
     children: [
-      mediaBuilder(model.mediaType, model.url, fullscreen),
+      mediaBuilder(model.mediaType, model.url, fullscreen, (){
+        onChangeIndex();
+      }),
       Container(
         padding: EdgeInsets.all(15),
         alignment: Alignment.bottomRight,
@@ -84,7 +89,7 @@ class _FavoritesPageState extends State<FavoritesPage>
   );
 
   Widget loaded(AstronomicalMediaModel model) =>
-      isLandscape(context) || fullscreen
+      fullscreen
           ? mediaWidget(model)
           : ListView(
             children: [mediaWidget(model), infosWidget(context, model)],
@@ -134,7 +139,7 @@ class _FavoritesPageState extends State<FavoritesPage>
   @override
   Widget build(BuildContext context) {
     return BottomNavigatorScaffold(
-      fullscreenMode: isLandscape(context) || fullscreen,
+      fullscreenMode: fullscreen,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +148,7 @@ class _FavoritesPageState extends State<FavoritesPage>
       ),
       body: Column(
         children: [
-          isLandscape(context) || fullscreen ?  SizedBox() : navigationActions(),
+          fullscreen ?  SizedBox() : navigationActions(),
           Expanded(
             child:
                 BlocBuilder<AstronomicalMediaBloc, AstronomicalMediaBlocState>(
