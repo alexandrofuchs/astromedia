@@ -23,7 +23,7 @@ mixin ScreenMode {
     return defaultAspectRatio;
   }
 
-  toggleFullscreen() {
+  void toggleFullscreen() {
     if (!fullscreen) {
       SystemChrome.setEnabledSystemUIMode(
         SystemUiMode.manual,

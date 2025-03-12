@@ -31,7 +31,7 @@ abstract class AppSnackbars {
                       child: Text(
                         message,
                         softWrap: true,
-                        style: AppTextStyles.titleMedium,
+                        style: AppTextStyles.whiteLarge,
                       ),
                     ),
                   ),
@@ -69,7 +69,7 @@ abstract class AppSnackbars {
                         message,
                         softWrap: true,
                         maxLines: 3,
-                        style: AppTextStyles.titleMedium,
+                        style: AppTextStyles.whiteLarge,
                       ),
                     ),
                   ),

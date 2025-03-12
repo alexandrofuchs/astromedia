@@ -9,21 +9,25 @@ import 'package:astromedia/modules/home/presenter/widgets/media_widgets.dart';
 import 'package:astromedia/modules/home/presenter/widgets/screen_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final AstronomicalMediaBloc bloc;
+  final Future<SharedPreferences> sharedPreferences;
+  const HomePage({super.key, required this.bloc, required this.sharedPreferences});
 
   @override
   State<StatefulWidget> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage>
-    with FavoritesWidget, SetThemeWidget, ScreenMode, MediaWidgets{
-  final bloc = AstronomicalMediaBloc(Modular.get());
+    with FavoritesWidget, SetThemeWidget, ScreenMode, MediaWidgets {
 
   @override
   void initState() {
+    bloc = widget.bloc;
+    sharedPreferences = widget.sharedPreferences;
+
     getFavorites();
 
     bloc.add(GetMediaEvent(DateTime.now()));
@@ -89,54 +93,37 @@ class _HomePageState extends State<HomePage>
       IconButton(
         icon: Icon(Icons.arrow_forward_ios),
         onPressed: () {
-          if (selectedDate.value == null) return;
-          final now = DateTime.now();
-          if (selectedDate.value!.year > now.year) return;
-          if (selectedDate.value!.month > now.month) return;
-          if (selectedDate.value!.month == now.month && selectedDate.value!.add(Duration(days: 1)).day > now.day) return;
+          if (selectedDate.value.isFutureDate()) return;
           selectedDate.value = selectedDate.value!.add(Duration(days: 1));
         },
       ),
     ],
   );
-
-  Widget mediaWidget(AstronomicalMediaModel model) => Stack(
-    alignment: Alignment.bottomCenter,
-    children: [
-      mediaBuilder(model.mediaType, model.url, fullscreen, (){
-        if(selectedDate.value == null) return;
-        bloc.add(GetMediaEvent(selectedDate.value!));
-      }),
-      Container(
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomRight,
-        child: GestureDetector(
-          onTap: () {
-            setState(toggleFullscreen);
-          },
-          child: Container(
-            height: 24,
-            width: 24,
-            alignment: Alignment.center,
-            child: const Icon(
-              Icons.fullscreen,
-              color: AppColors.primaryColor,
-              size: 24,
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-
   Widget loaded(AstronomicalMediaModel model) =>
       fullscreen
-          ? mediaWidget(model)
+          ? mediaWidget(
+            model,
+            onToggleFullscreen: () => setState(toggleFullscreen),
+            onRestartPlayer: () {
+              if (selectedDate.value == null) return;
+              bloc.add(GetMediaEvent(selectedDate.value!));
+            },
+          )
           : ListView(
-            children: [mediaWidget(model), infosWidget(context, model)],
+            children: [
+              mediaWidget(
+                model,
+                onToggleFullscreen: () => setState(toggleFullscreen),
+                onRestartPlayer: () {
+                  if (selectedDate.value == null) return;
+                  bloc.add(GetMediaEvent(selectedDate.value!));
+                },
+              ),
+              infosWidget(context, model),
+            ],
           );
 
-  Widget failed() => Center(child: Text('Mídia não encontrada.'));
+  Widget failed(String error ) => Center(key: Key('failedWidget'), child: Text(error));
 
   Widget loading() => Center(child: CircularProgressIndicator());
 
@@ -152,19 +139,16 @@ class _HomePageState extends State<HomePage>
       ),
       body: Column(
         children: [
-          fullscreen ?  SizedBox() : dateActions(),
+          fullscreen ? SizedBox() : dateActions(),
           Expanded(
             child:
                 BlocBuilder<AstronomicalMediaBloc, AstronomicalMediaBlocState>(
                   bloc: bloc,
-                  builder:
-                      (context, state) => switch (state.status) {
+                  builder: (context, state) => switch (state.status) {
                         AstronomicalMediaBlocStatus.initial => SizedBox(),
                         AstronomicalMediaBlocStatus.loading => loading(),
-                        AstronomicalMediaBlocStatus.loaded => loaded(
-                          state.data!,
-                        ),
-                        AstronomicalMediaBlocStatus.failed => failed(),
+                        AstronomicalMediaBlocStatus.loaded => loaded(state.data!),
+                        AstronomicalMediaBlocStatus.failed => failed(state.error!.publicMessage ?? 'Falha ao carregar a mídia'),
                       },
                 ),
           ),

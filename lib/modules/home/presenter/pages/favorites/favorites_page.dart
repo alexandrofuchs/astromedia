@@ -1,6 +1,5 @@
 import 'package:astromedia/core/helpers/extensions/datetime_extension.dart';
 import 'package:astromedia/core/helpers/formatters/date_string_formatters.dart';
-import 'package:astromedia/core/themes/app_colors.dart';
 import 'package:astromedia/core/themes/app_fonts.dart';
 import 'package:astromedia/core/widgets/bottom_navigator/bottom_navigator_scaffold.dart';
 import 'package:astromedia/core/widgets/set_theme/set_theme_widget.dart';
@@ -11,25 +10,27 @@ import 'package:astromedia/modules/home/presenter/widgets/media_widgets.dart';
 import 'package:astromedia/modules/home/presenter/widgets/screen_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesPage extends StatefulWidget {
-  const FavoritesPage({super.key});
+  final AstronomicalMediaBloc bloc;
+  final Future<SharedPreferences> sharedPreferences;
+
+  const FavoritesPage({super.key, required this.bloc, required this.sharedPreferences});
 
   @override
   State<StatefulWidget> createState() => _FavoritesPageState();
 }
 
 class _FavoritesPageState extends State<FavoritesPage>
-    with FavoritesWidget, SetThemeWidget, ScreenMode, MediaWidgets{
-  final bloc = AstronomicalMediaBloc(Modular.get());
-
+    with FavoritesWidget, SetThemeWidget, ScreenMode, MediaWidgets {
   final ValueNotifier<int> selectedFavoriteIndex = ValueNotifier(0);
-
-  final scrollController = ScrollController();
 
   @override
   void initState() {
+    bloc = widget.bloc;
+    sharedPreferences = widget.sharedPreferences;
+
     selectedFavoriteIndex.addListener(onChangeIndex);
     storedDates.addListener(onLoadedFavorites);
     selectedFavoriteIndex.value = 0;
@@ -44,58 +45,44 @@ class _FavoritesPageState extends State<FavoritesPage>
     selectedFavoriteIndex.dispose();
     storedDates.removeListener(onLoadedFavorites);
     storedDates.dispose();
-    scrollController.dispose();
     super.dispose();
   }
 
   void onLoadedFavorites() {
-    if (storedDates.value.isEmpty) return;
+    if (storedDates.value.isEmpty) {
+      bloc.add(ResetEvent());
+      return;
+    }
     selectedFavoriteIndex.value = 0;
     onChangeIndex();
   }
 
   void onChangeIndex() {
-    final date = storedDates.value[selectedFavoriteIndex.value].fromYMDDateString();
+    final date =
+        storedDates.value[selectedFavoriteIndex.value].fromYMDDateString();
     if (date == null) return;
     bloc.add(GetMediaEvent(date));
   }
 
-  Widget mediaWidget(AstronomicalMediaModel model) => Stack(
-    alignment: Alignment.bottomCenter,
-    children: [
-      mediaBuilder(model.mediaType, model.url, fullscreen, (){
-        onChangeIndex();
-      }),
-      Container(
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomRight,
-        child: GestureDetector(
-          onTap: () {
-            setState(toggleFullscreen);
-          },
-          child: Container(
-            height: 24,
-            width: 24,
-            alignment: Alignment.center,
-            child: const Icon(
-              Icons.fullscreen,
-              color: AppColors.primaryColor,
-              size: 24,
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-
   Widget loaded(AstronomicalMediaModel model) =>
       fullscreen
-          ? mediaWidget(model)
+          ? mediaWidget(
+            model,
+            onToggleFullscreen: () => setState(toggleFullscreen),
+            onRestartPlayer: onChangeIndex,
+          )
           : ListView(
-            children: [mediaWidget(model), infosWidget(context, model)],
+            children: [
+              mediaWidget(
+                model,
+                onToggleFullscreen: () => setState(toggleFullscreen),
+                onRestartPlayer: onChangeIndex,
+              ),
+              infosWidget(context, model),
+            ],
           );
 
-  Widget failed() => Center(child: Text('failed'));
+  Widget failed(String error) => Center(child: Text(error));
 
   Widget loading() => Center(child: CircularProgressIndicator());
 
@@ -148,17 +135,19 @@ class _FavoritesPageState extends State<FavoritesPage>
       ),
       body: Column(
         children: [
-          fullscreen ?  SizedBox() : navigationActions(),
+          fullscreen ? SizedBox() : navigationActions(),
           Expanded(
             child:
                 BlocBuilder<AstronomicalMediaBloc, AstronomicalMediaBlocState>(
                   bloc: bloc,
                   builder:
                       (context, state) => switch (state.status) {
-                        AstronomicalMediaBlocStatus.initial => Center(child: Text('Sem favoritos'),),
+                        AstronomicalMediaBlocStatus.initial => Center(
+                          child: Text('Sem favoritos'),
+                        ),
                         AstronomicalMediaBlocStatus.loading => loading(),
                         AstronomicalMediaBlocStatus.loaded => loaded(state.data!),
-                        AstronomicalMediaBlocStatus.failed => failed(),
+                        AstronomicalMediaBlocStatus.failed => failed(state.error!.publicMessage ?? 'Falha ao carregar a mídia'),
                       },
                 ),
           ),

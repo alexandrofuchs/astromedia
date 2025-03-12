@@ -13,7 +13,7 @@ class AstronomicalMediaUsecase implements IAstronomicalMediaUsecase {
     try {
       return Success(await _repository.getMedia(date));
     } catch (e) {
-      return Fail(AppException(id: e, method: getMedia, namespace: this));
+      return Fail(AppException(id: e, method: getMedia, namespace: this, publicMessage: 'Mídia não encontrada'));
     }
   }
 }

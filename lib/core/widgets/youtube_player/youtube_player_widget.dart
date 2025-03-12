@@ -17,7 +17,7 @@ class YoutubeMediaPlayerWidget extends StatefulWidget {
   final String label;
   final String title;
   final bool fullscreen;
-  final Function onRestart;
+  final Function? onRestartPlayer;
 
   const YoutubeMediaPlayerWidget(
       {super.key,
@@ -25,7 +25,7 @@ class YoutubeMediaPlayerWidget extends StatefulWidget {
       required this.title,
       required this.label,
       required this.fullscreen,
-      required this.onRestart,
+      required this.onRestartPlayer,
       });
 
   @override
@@ -226,7 +226,7 @@ class _YoutubeMediaPlayerState extends State<YoutubeMediaPlayerWidget>
                             !isReady
                                 ? initialBuild()
                                 : mainOverlayBuild(context, setState),
-                            videoEndedBuild(widget.mediaLink.split('/').last, widget.onRestart),
+                            videoEndedBuild(widget.mediaLink.split('/').last, widget.onRestartPlayer ?? (){}),
                           ],
                         ))
                     : AspectRatio(

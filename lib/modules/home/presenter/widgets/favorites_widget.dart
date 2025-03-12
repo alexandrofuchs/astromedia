@@ -6,12 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 mixin FavoritesWidget {
-  final Future<SharedPreferencesWithCache> _sharedPreferences =
-      SharedPreferencesWithCache.create(
-        cacheOptions: const SharedPreferencesWithCacheOptions(
-          allowList: <String>{'dates'},
-        ),
-      );
+  late final Future<SharedPreferences> sharedPreferences;
 
   final ValueNotifier<List<String>> storedDates = ValueNotifier([]);
 
@@ -19,7 +14,7 @@ mixin FavoritesWidget {
     try {
       if (date == null) return false;
 
-      final SharedPreferencesWithCache prefs = await _sharedPreferences;
+      final prefs = await sharedPreferences;
       
       var dates = prefs.getStringList('dates') ?? [];
 
@@ -44,7 +39,7 @@ mixin FavoritesWidget {
 
   Future<void> getFavorites() async {
     try {
-      final SharedPreferencesWithCache prefs = await _sharedPreferences;
+      final prefs = await sharedPreferences;
       final List<String> dates = prefs.getStringList('dates') ?? [];
       storedDates.value = dates;
     } catch (e) {

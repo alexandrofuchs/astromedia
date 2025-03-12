@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeModeController {
-  final Future<SharedPreferencesWithCache> _sharedPreferences =
-      SharedPreferencesWithCache.create(
-        cacheOptions: const SharedPreferencesWithCacheOptions(
-          allowList: <String>{'dark_theme_mode'},
-        ),
-      );
+  final Future<SharedPreferences> _sharedPreferences = SharedPreferences.getInstance();
 
   late final Function _setState;
   ThemeMode themeMode = ThemeMode.system;
@@ -15,7 +10,7 @@ class ThemeModeController {
   Future<void> loadTheme(Function setState) async {
     try {
       _setState = setState;
-      final SharedPreferencesWithCache prefs = await _sharedPreferences;
+      final prefs = await _sharedPreferences;
       final bool mode = prefs.getBool('dark_theme_mode') ?? false;
       setState(() {
         themeMode = mode ? ThemeMode.dark : ThemeMode.light;
@@ -27,7 +22,7 @@ class ThemeModeController {
 
   Future<void> setTheme(bool darkMode) async {
     try {
-      final SharedPreferencesWithCache prefs = await _sharedPreferences;
+      final prefs = await _sharedPreferences;
       final bool mode = prefs.getBool('dark_theme_mode') ?? false;
       await prefs.setBool('dark_theme_mode', !mode);
       _setState(() {
