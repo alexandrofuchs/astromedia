@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 part 'interceptors_part.dart';
 
 late String baseUrl;
-// late String accessToken;
 late String apiKey;
 
 class ApiRequestInterceptor with InterceptorsPart
