@@ -27,7 +27,7 @@ mixin YoutubePlayerBaseWidgets on YoutubePlayerPopMenus {
       MediaQuery.of(context).size.width > MediaQuery.of(context).size.height;
 
   double getAspectRatio(BuildContext context) {
-    if (fullscreen || isLandscape(context)) {
+    if (fullscreen) {
 
       if(!_controller.value.isFullScreen){
         _controller.toggleFullScreenMode();
