@@ -39,8 +39,10 @@ class AstronomicalImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InteractiveViewer(
-      child: imageWidget(CachedNetworkImageProvider(uri)),
+    return Center(
+      child: InteractiveViewer(
+        child: imageWidget(CachedNetworkImageProvider(uri)),
+      ),
     );
   }
 }

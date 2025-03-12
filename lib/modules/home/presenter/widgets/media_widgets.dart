@@ -79,4 +79,5 @@ mixin MediaWidgets on FavoritesWidget, ScreenMode {
           ],
         ),
       );
+      
 }

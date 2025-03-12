@@ -9,6 +9,7 @@ import 'package:astromedia/modules/home/presenter/bloc/astronomical_media_bloc.d
 import 'package:astromedia/modules/home/presenter/widgets/media_widgets.dart';
 import 'package:astromedia/modules/home/presenter/widgets/screen_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +17,11 @@ class FavoritesPage extends StatefulWidget {
   final AstronomicalMediaBloc bloc;
   final Future<SharedPreferences> sharedPreferences;
 
-  const FavoritesPage({super.key, required this.bloc, required this.sharedPreferences});
+  const FavoritesPage({
+    super.key,
+    required this.bloc,
+    required this.sharedPreferences,
+  });
 
   @override
   State<StatefulWidget> createState() => _FavoritesPageState();
@@ -25,6 +30,8 @@ class FavoritesPage extends StatefulWidget {
 class _FavoritesPageState extends State<FavoritesPage>
     with FavoritesWidget, SetThemeWidget, ScreenMode, MediaWidgets {
   final ValueNotifier<int> selectedFavoriteIndex = ValueNotifier(0);
+
+  bool left = false;
 
   @override
   void initState() {
@@ -64,23 +71,37 @@ class _FavoritesPageState extends State<FavoritesPage>
     bloc.add(GetMediaEvent(date));
   }
 
-  Widget loaded(AstronomicalMediaModel model) =>
-      fullscreen
-          ? mediaWidget(
-            model,
-            onToggleFullscreen: () => setState(toggleFullscreen),
-            onRestartPlayer: onChangeIndex,
-          )
-          : ListView(
-            children: [
-              mediaWidget(
-                model,
-                onToggleFullscreen: () => setState(toggleFullscreen),
-                onRestartPlayer: onChangeIndex,
-              ),
-              infosWidget(context, model),
-            ],
-          );
+  Widget loaded(AstronomicalMediaModel model) => GestureDetector(
+    onHorizontalDragEnd: (details) {
+      if (details.velocity.pixelsPerSecond.dx > 0.0) {
+        if (selectedFavoriteIndex.value >= storedDates.value.length - 1) return;
+        selectedFavoriteIndex.value = selectedFavoriteIndex.value + 1;
+        left = true;
+      } else if (details.velocity.pixelsPerSecond.dx < 0.0) {
+        if (selectedFavoriteIndex.value <= 0) return;
+        selectedFavoriteIndex.value = selectedFavoriteIndex.value - 1;
+        left = false;
+      }
+    },
+
+    child:
+        fullscreen
+            ? mediaWidget(
+              model,
+              onToggleFullscreen: () => setState(toggleFullscreen),
+              onRestartPlayer: onChangeIndex,
+            )
+            : ListView(
+              children: [
+                mediaWidget(
+                  model,
+                  onToggleFullscreen: () => setState(toggleFullscreen),
+                  onRestartPlayer: onChangeIndex,
+                ),
+                infosWidget(context, model),
+              ],
+            ),
+  );
 
   Widget failed(String error) => Center(child: Text(error));
 
@@ -94,6 +115,7 @@ class _FavoritesPageState extends State<FavoritesPage>
         onPressed: () {
           if (selectedFavoriteIndex.value <= 0) return;
           selectedFavoriteIndex.value = selectedFavoriteIndex.value - 1;
+          left = true;
         },
       ),
       ValueListenableBuilder(
@@ -118,6 +140,7 @@ class _FavoritesPageState extends State<FavoritesPage>
         onPressed: () {
           if (selectedFavoriteIndex.value >= storedDates.value.length - 1) return;
           selectedFavoriteIndex.value = selectedFavoriteIndex.value + 1;
+          left = false;
         },
       ),
     ],
@@ -137,19 +160,24 @@ class _FavoritesPageState extends State<FavoritesPage>
         children: [
           fullscreen ? SizedBox() : navigationActions(),
           Expanded(
-            child:
-                BlocBuilder<AstronomicalMediaBloc, AstronomicalMediaBlocState>(
-                  bloc: bloc,
-                  builder:
-                      (context, state) => switch (state.status) {
-                        AstronomicalMediaBlocStatus.initial => Center(
-                          child: Text('Sem favoritos'),
-                        ),
-                        AstronomicalMediaBlocStatus.loading => loading(),
-                        AstronomicalMediaBlocStatus.loaded => loaded(state.data!),
-                        AstronomicalMediaBlocStatus.failed => failed(state.error!.publicMessage ?? 'Falha ao carregar a mídia'),
-                      },
-                ),
+            child: BlocBuilder<
+              AstronomicalMediaBloc,
+              AstronomicalMediaBlocState
+            >(
+              bloc: bloc,
+              builder:
+                  (context, state) => 
+                  SizedBox(child: switch (state.status) {
+                    AstronomicalMediaBlocStatus.initial => Center(
+                      child: Text('Sem favoritos'),
+                    ),
+                     AstronomicalMediaBlocStatus.loading => loading().animate(),
+                    AstronomicalMediaBlocStatus.loaded => loaded(state.data!).animate().slideX(begin: left ? -1 : 1, end: 0, delay: Duration(milliseconds: 300)),
+                    AstronomicalMediaBlocStatus.failed => failed(
+                      state.error!.publicMessage ?? 'Falha ao carregar a mídia',
+                    ),
+                  },
+            ))
           ),
         ],
       ),

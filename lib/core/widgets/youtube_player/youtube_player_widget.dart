@@ -54,12 +54,6 @@ class _YoutubeMediaPlayerState extends State<YoutubeMediaPlayerWidget>
 
     fullscreen = widget.fullscreen;
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-
     initVideoPlayer();
   }
 
@@ -231,7 +225,7 @@ class _YoutubeMediaPlayerState extends State<YoutubeMediaPlayerWidget>
                         ))
                     : AspectRatio(
                         aspectRatio: getAspectRatio(context), child:  showErrorMessage ?
-                        Text('Não foi possível carregar o arquivo de midia!') : const SizedBox())
+                        Center(child: Text('Não foi possível carregar o arquivo de midia!')) : const SizedBox())
                     );
 
   }

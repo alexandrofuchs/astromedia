@@ -8,6 +8,7 @@ import 'package:astromedia/modules/home/presenter/bloc/astronomical_media_bloc.d
 import 'package:astromedia/modules/home/presenter/widgets/media_widgets.dart';
 import 'package:astromedia/modules/home/presenter/widgets/screen_mode.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +23,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with FavoritesWidget, SetThemeWidget, ScreenMode, MediaWidgets {
+
+  bool left = false;
 
   @override
   void initState() {
@@ -74,6 +77,7 @@ class _HomePageState extends State<HomePage>
         onPressed: () {
           if (selectedDate.value == null) return;
           selectedDate.value = selectedDate.value!.subtract(Duration(days: 1));
+          left = true;
         },
       ),
 
@@ -95,12 +99,26 @@ class _HomePageState extends State<HomePage>
         onPressed: () {
           if (selectedDate.value.isFutureDate()) return;
           selectedDate.value = selectedDate.value!.add(Duration(days: 1));
+          left = false;
         },
       ),
     ],
   );
   Widget loaded(AstronomicalMediaModel model) =>
-      fullscreen
+    GestureDetector(
+      onHorizontalDragEnd: (details) {
+        if(details.velocity.pixelsPerSecond.dx < 0.0){
+          if (selectedDate.value.isFutureDate()) return;
+          selectedDate.value = selectedDate.value!.add(Duration(days: 1));
+          left = false;
+        }else if (details.velocity.pixelsPerSecond.dx > 0.0){
+          if (selectedDate.value == null) return;
+          selectedDate.value = selectedDate.value!.subtract(Duration(days: 1));
+          left = true;
+        }
+      },
+      
+    child: fullscreen
           ? mediaWidget(
             model,
             onToggleFullscreen: () => setState(toggleFullscreen),
@@ -121,7 +139,7 @@ class _HomePageState extends State<HomePage>
               ),
               infosWidget(context, model),
             ],
-          );
+          ));
 
   Widget failed(String error ) => Center(key: Key('failedWidget'), child: Text(error));
 
@@ -146,8 +164,8 @@ class _HomePageState extends State<HomePage>
                   bloc: bloc,
                   builder: (context, state) => switch (state.status) {
                         AstronomicalMediaBlocStatus.initial => SizedBox(),
-                        AstronomicalMediaBlocStatus.loading => loading(),
-                        AstronomicalMediaBlocStatus.loaded => loaded(state.data!),
+                        AstronomicalMediaBlocStatus.loading => loading().animate(),
+                        AstronomicalMediaBlocStatus.loaded => loaded(state.data!).animate().slideX(begin: left ? -1 : 1, end: 0, delay: Duration(milliseconds: 300)),
                         AstronomicalMediaBlocStatus.failed => failed(state.error!.publicMessage ?? 'Falha ao carregar a mídia'),
                       },
                 ),
